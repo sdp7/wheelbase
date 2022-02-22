@@ -1,0 +1,3 @@
+[submodule "hls_lfcd_lds_driver"]
+	path = hls_lfcd_lds_driver
+	url = https://github.com/ROBOTIS-GIT/hls_lfcd_lds_driver
