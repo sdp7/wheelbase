@@ -19,3 +19,7 @@
 [submodule "navigation"]
 	path = navigation
 	url = https://github.com/ros-planning/navigation.git
+[submodule "turtlebot3"]
+        path = turtlebot3
+        url = https://github.com/sdp7/turtlebot3.git
+
