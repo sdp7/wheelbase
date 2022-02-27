@@ -5,7 +5,7 @@ from sensor_msgs.msg import LaserScan
 from time import time 
   
 def laser_scan_callback(data): 
-    print data.ranges 
+    print(data.ranges) 
   
 def read_laser_scan_data(): 
     rospy.Subscriber('scan',LaserScan,laser_scan_callback) 
