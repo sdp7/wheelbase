@@ -1,33 +1,46 @@
 #!/usr/bin/env python3
 
+from socket import MsgFlag
+from turtle import pos
+
+from psutil import POSIX
 import rospy
 from geometry_msgs.msg import PoseStamped
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from nav_msgs.msg import Odometry
+
+def odom_callback(msg):
+    print("--------------------------")
+    print("pose x = " + str(msg.pose.pose.position.x))
+    print("pose y = " + str(msg.pose.pose.position.y))
+
+def subscriber():
+    rospy.Subscriber('/odom',Odometry, odom_callback)
+
 
 def talker():
     rospy.init_node('talker', anonymous=True)
     
-    pub = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size= 10)
-    msg = PoseStamped()
+    pub = rospy.Publisher("/move_base", MoveBaseGoal, queue_size= 10)
+    msg = MoveBaseGoal()
 
-    msg.header.seq = 1
-    msg.header.stamp = rospy.Time.now()
-    msg.header.frame_id = 'map'
-    msg.pose.position.x = -0.0
-    msg.pose.position.y = 0.0
-    msg.pose.orientation.w = 1.0
+    msg.target_pose.header.stamp = rospy.Time.now()
+    msg.target_pose.header.frame_id = 'map'
+    msg.target_pose.pose.position.x = 0.0
+    msg.target_pose.pose.position.y = 0.0
+    msg.target_pose.pose.orientation.w = 1.0
     rate = rospy.Rate(10)
     rospy.loginfo(msg)
     pub.publish(msg)
 
-def publishMoveBaseGoalWaitForReply():
+def publishMoveBaseGoalWaitForReply(posX, posY):
     rospy.init_node('talker', anonymous=True)
     goal = MoveBaseGoal()
     goal.target_pose.header.frame_id = "map"
     goal.target_pose.header.stamp = rospy.Time.now()
-    goal.target_pose.pose.position.x = 0.5
-    goal.target_pose.pose.position.y = -1.3
+    goal.target_pose.pose.position.x = posX
+    goal.target_pose.pose.position.y = posY
 
     # to send orientation with a yaw we need quaternion transform
     goal.target_pose.pose.orientation.w = 1.0
@@ -50,9 +63,19 @@ def publishMoveBaseGoalWaitForReply():
 
 if __name__ == '__main__':
     
+    goals = [(0, -0.5), (0, 0.7), (-0.45, -1.2)]
 
     try:
-        publishMoveBaseGoalWaitForReply()
+        # talker()
+        # print("hello world")
+        # # publishMoveBaseGoalWaitForReply()
+        # subscriber()
+        for goal in goals:
+            print(goal[0])
+            print(goal[1])
+            publishMoveBaseGoalWaitForReply(goal[0],goal[1])
+
+        
     except rospy.ROSInterruptException:
         pass
 
