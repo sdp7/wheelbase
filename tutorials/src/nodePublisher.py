@@ -63,7 +63,7 @@ def publishMoveBaseGoalWaitForReply(posX, posY):
 
 if __name__ == '__main__':
     
-    goals = [(0, -0.5), (0, 0.7), (-0.45, -1.2)]
+    goals = [(0, -0.5), (0, 0.5), (-0.45, -1.2)]
 
     try:
         # talker()
