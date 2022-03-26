@@ -31,7 +31,7 @@ def move_arm():
     joint_pos = Float64MultiArray() 
 #   Joint Position vector should contain 6 elements:
 #   [0, shoulder1, shoulder2, elbow, wrist, gripper]
-    joint_pos.data = clean_joint_states([0,  -0.4,  0, 0, 0, 0]) 
+    joint_pos.data = clean_joint_states([0,  0.4,  0, 0, 0, 0]) 
     jointpub.publish(joint_pos) 
     read_joint_states() 
  

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from pydoc import cli
 from socket import MsgFlag
 from turtle import pos
 
@@ -53,7 +54,6 @@ def publishMoveBaseGoalWaitForReply(posX, posY, oriZ, oriW):
 
     # publish the goal to the topic
     client.send_goal(goal)
-
     now = rospy.get_rostime()
     wait = client.wait_for_result()
     if not wait:

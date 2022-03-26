@@ -14,11 +14,11 @@ from time import time
 def rotate_callback(msg):
     print("---------------------------------")
     print("arm radius is" + str(msg.position[2]))
-    move_motor(0, msg.position[2], 2)
-
-def getRotateAngle():
-    rospy.Subscriber("joint_states", JointState, rotate_callback)
     
+    angle_rad = (msg.position[2])
+
+    return angle_rad
+
 def move_motor(fwd,ang,duration): 
     pub = rospy.Publisher('cmd_vel',Twist,queue_size = 10) 
     mc = Twist() 
@@ -35,9 +35,13 @@ def move_motor(fwd,ang,duration):
 
 if __name__ == '__main__':
     rospy.init_node('arm_mover')
-    rate = rospy.Rate(20)
-    
-    startTime = time()
+    angle = rospy.Subscriber("joint_states", JointState, rotate_callback)
+    #rospy.spin()
+    print("hello")
+    rate = rospy.Rate(1)
+    while not rospy.is_shutdown():
+        move_motor(0, angle[0]/2, 2)
+        rate.sleep()
+        exit()
 
-    move_motor(0, 0.2, 2)
     
