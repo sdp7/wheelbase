@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+from pydoc import cli
 from socket import MsgFlag
+from sysconfig import get_config_h_filename
 from turtle import pos
 
 from psutil import POSIX
@@ -53,7 +55,6 @@ def publishMoveBaseGoalWaitForReply(posX, posY, oriZ, oriW):
 
     # publish the goal to the topic
     client.send_goal(goal)
-
     now = rospy.get_rostime()
     wait = client.wait_for_result()
     if not wait:
@@ -68,6 +69,9 @@ if __name__ == '__main__':
     # goals = [(0, -0, 0, 0),(1.29,-0.41, -0.380, -0.9254),(1.157, 1.20, -0.12,1),(3.32, 1.42, -0.52, 0.85), (3.69, -0.73, -0.9889, 0.15), (0,0,0,0)]
 
     goals = [(0,0,0,0),(1.105, -0.49, -0.5635, 0.826), (1.82215,-3.46746, 0.9999, 0.0097), (-0.1357, -3.27549,0.70201, -0.712166 ), (0,0,0,0)]
+    
+    goal_index = 0
+
     try:
         # talker()
         # print("hello world")
@@ -78,7 +82,12 @@ if __name__ == '__main__':
             print(goal[1])
             publishMoveBaseGoalWaitForReply(goal[0],goal[1],goal[2], goal[3])
 
-        
+        while goal_index < len(goals):
+            print(goal[0])
+            print(goal[1])
+            publishMoveBaseGoalWaitForReply(goal[0],goal[1],goal[2], goal[3])
+            goal_index = goal_index + 1
+
     except rospy.ROSInterruptException:
         pass
 
