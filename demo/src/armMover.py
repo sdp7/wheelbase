@@ -26,19 +26,19 @@ def clean_joint_states(data):
     return list(clean_upper) 
  
 # publishes a set of joint commands to the 'joint_trajectory_point' topic
-def move_arm(): 
+def move_arm(angle): 
     jointpub = rospy.Publisher('joint_trajectory_point',Float64MultiArray, queue_size =10)    
     joint_pos = Float64MultiArray() 
 #   Joint Position vector should contain 6 elements:
 #   [0, shoulder1, shoulder2, elbow, wrist, gripper]
-    joint_pos.data = clean_joint_states([0,  0.4,  0, 0, 0, 0]) 
+    joint_pos.data = clean_joint_states([0, angle,  0, 0, 0, 0]) 
     jointpub.publish(joint_pos) 
     read_joint_states() 
  
-#loops over the commands at 20Hz until shut down
+#loops over the commands at 10Hz until shut down
 if __name__ == '__main__': 
     rospy.init_node('move_arm',anonymous=True) 
-    rate = rospy.Rate(20) 
+    rate = rospy.Rate(10) 
     while not rospy.is_shutdown(): 
-        move_arm() 
+        move_arm(0.4) 
         rate.sleep() 
