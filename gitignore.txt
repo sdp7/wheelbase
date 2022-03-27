@@ -1,0 +1,8 @@
+turtlebot3_msgs/*
+turtlebot3_simulations/*
+navigation/
+hls_lfcd_lds_driver/*
+Dynamixel/*
+DynamixelSDK/*
+openslam_gmapping/
+slam_gmapping/*
