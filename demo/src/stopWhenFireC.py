@@ -22,26 +22,6 @@ class fireTuner:
         print("---------------------------------")
         print("arm radius is" + str(msg.position[2]))
         self.angle = msg.position[2]
-    
-    # def move_motor(self,fwd,duration): 
-    #     #d = float(rospy.Duration(duration))
-    #     print("moving motor")
-    #     print(self.angle)
-    #     print(duration)
-    #     pub = rospy.Publisher('cmd_vel',Twist,queue_size = 10) 
-    #     mc = Twist() 
-    #     mc.linear.x = fwd
-    #     mc.angular.z =  self.angle/duration
-    #     start_time = rospy.get_time()
-
-    #     while rospy.get_time() - start_time < duration:
-    #         print(f"trying to spin at {mc.angular.z}")
-    #         pub.publish(mc)
-        
-    #     for i in range(10):
-    #         mc.linear.x = 0
-    #         mc.angular.z = 0
-    #         pub.publish(mc)
 
     def move_motor(self): 
         pub = rospy.Publisher('cmd_vel',Twist,queue_size = 10) 
