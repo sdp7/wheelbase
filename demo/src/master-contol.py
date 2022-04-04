@@ -3,6 +3,7 @@
 from navArena import *
 from mannualControll import *
 from std_msgs.msg import Int16
+from time import time, sleep 
 
 class masterControl():
     
@@ -10,10 +11,11 @@ class masterControl():
         rospy.init_node("masterControl")
 
         # 0 for navigation and 1 for mannalControl
-        self.currMode = 0
+        self.currMode = 1
         self.sub = rospy.Subscriber('currMode', Int16, self.mode_callback)
         self.nav = NavClient()
         self.mannual = mannualController()
+        self.rate = rospy.Rate(20)
     
     def mode_callback(self, msg):
         if(msg.data != self.currMode):
@@ -42,5 +44,6 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print("shutting down")
             exit()
+        master.rate.sleep()
         
 

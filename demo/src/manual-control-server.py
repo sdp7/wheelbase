@@ -7,6 +7,7 @@ Example usage of the TCPServer class from the TCPCOM library
 from tcpcom import TCPServer
 import rospy
 from std_msgs.msg import Float32MultiArray
+from time import time, sleep 
 
 # connection configuration settings
 tcp_ip = "192.168.105.17"
@@ -27,7 +28,9 @@ class manualServer():
         self.wheelbase_y = 0
         self.turret_x = 0
         self.turret_y = 0
+        self.isShooting = False
         self.pub = rospy.Publisher("manualServer", Float32MultiArray, queue_size = 10)
+        self.rate = rospy.Rate(20)
 
     def handleMessage(self, msg):
         message = msg.split(";")
@@ -37,6 +40,13 @@ class manualServer():
         elif(message[0] == "Turret"):
             self.turret_x = float(message[1])
             self.turret_y = float(message[2])
+        elif(message[0] == "Shot"):
+            if(message[1] == "true"):
+                self.isShooting = True
+                print("current status is True")
+            else:
+                self.isShooting = False
+                print("current status is False")
         self.pub_states()
 
     def onStateChanged(self, state, msg):
@@ -56,6 +66,7 @@ class manualServer():
         msg = Float32MultiArray()
         msg.data = [self.wheelbase_x, self.wheelbase_y, self.turret_x, self.turret_y]
         self.pub.publish(msg)
+        self.rate.sleep()
 
 
 

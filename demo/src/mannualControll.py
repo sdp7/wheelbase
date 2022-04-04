@@ -14,12 +14,13 @@ from time import time
 
 class mannualController():
     def __init__(self):
-        #rospy.init_node("mannal_control", anonymous=True)
+        rospy.init_node("mannal_control", anonymous=True)
         self.angSpeed = 0
         self.linSpeed = 0
 
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         self.sub = rospy.Subscriber('manualServer', Float32MultiArray,self.control_callback)
+        self.rate = rospy.Rate(20)
 
     def control_callback(self, msg):
         print("curr linear speed is" + str(msg.data[1]))
@@ -41,6 +42,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         try:
             controller.move_motor()
+            controller.rate.sleep()
         except KeyboardInterrupt:
             print("shutting down")
             exit()
