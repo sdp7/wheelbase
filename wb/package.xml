@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>demo</name>
+  <name>wb</name>
   <version>1.0.0</version>
   <description>The package for nodes written for demos</description>
 
