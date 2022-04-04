@@ -20,9 +20,10 @@ turret_x = 0
 turret_y = 0
 
 
-class manualServer():
+class manualServer:
     
     def __init__(self):
+        rospy.init_node("manual_server", anonymous=True)
         self.wheelbase_x = 0
         self.wheelbase_y = 0
         self.turret_x = 0
@@ -56,15 +57,19 @@ class manualServer():
     def onStateChanged(self, state, msg):
         global isConnected
 
-        if state == "LISTENING":
-            print("Server:-- Listening...")
-        elif state == "CONNECTED":
-            isConnected = True
-            print("Server:-- Connected to" + msg)
-        elif state == "MESSAGE":
-            print("Server:-- Message received:", msg)
-            self.handleMessage(msg)
-            server.sendMessage(tcp_reply)
+        try:
+            if state == "LISTENING":
+                print("Server:-- Listening...")
+            elif state == "CONNECTED":
+                isConnected = True
+                print("Server:-- Connected to" + msg)
+            elif state == "MESSAGE":
+                print("Server:-- Message received:", msg)
+                self.handleMessage(msg)
+                server.sendMessage(tcp_reply)
+        except KeyboardInterrupt:
+            print("Shutting down manual control node")
+            exit()
         
     def pub_states(self):
         msg = Float32MultiArray()
@@ -74,14 +79,14 @@ class manualServer():
 
 def main():
     ms = manualServer()
-    rospy.init_node("manualServer", anonymous=True)
     global server
     server = TCPServer(tcp_port, stateChanged=ms.onStateChanged)
-    while not rospy.is_shutdown():
-        try:
-            pass
-        except KeyboardInterrupt:
-            print("Shutting down manual control node")
+    # while not rospy.is_shutdown():
+    #     try:
+    #         pass
+    #     except KeyboardInterrupt:
+    #         print("Shutting down manual control node")
+    #         break
 
 if __name__ == '__main__':
     main()
