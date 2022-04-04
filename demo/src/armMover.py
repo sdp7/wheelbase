@@ -17,7 +17,8 @@ def joint_callback(data):
 def read_joint_states(): 
     rospy.Subscriber("joint_states",JointState,joint_callback) 
  
-# Makes sure the joints do not go outside the joint limits/break the servos
+# M
+# akes sure the joints do not go outside the joint limits/break the servos
 def clean_joint_states(data): 
     lower_limits = [0, -1.57, -1.57, -1.57, -1.57,   -1] 
     upper_limits = [0,  1.57,  1.57,  1.57,  1.57, 1.57] 
@@ -31,14 +32,18 @@ def move_arm(angle):
     joint_pos = Float64MultiArray() 
 #   Joint Position vector should contain 6 elements:
 #   [0, shoulder1, shoulder2, elbow, wrist, gripper]
-    joint_pos.data = clean_joint_states([0, angle,  0, 0, 0, 0]) 
+    joint_pos.data = clean_joint_states([0, 0,  1.57, -1.47, 0, 0]) 
     jointpub.publish(joint_pos) 
     read_joint_states() 
  
 #loops over the commands at 10Hz until shut down
 if __name__ == '__main__': 
     rospy.init_node('move_arm',anonymous=True) 
+    num = 0
     rate = rospy.Rate(10) 
     while not rospy.is_shutdown(): 
         move_arm(0.4) 
         rate.sleep() 
+        num += 1
+        if num > 20:
+            exit()

@@ -6,7 +6,7 @@ from xmlrpc.client import TRANSPORT_ERROR
 
 from numpy import angle
 
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import JointState
 import rospy
 from geometry_msgs.msg import Twist 
@@ -14,19 +14,19 @@ from time import time
 
 class mannualController():
     def __init__(self):
-        rospy.init_node("mannal_control", anonymous=True)
+        #rospy.init_node("mannal_control", anonymous=True)
         self.angSpeed = 0
         self.linSpeed = 0
 
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-        self.sub = rospy.Subscriber('control', Float64MultiArray,self.control_callback)
+        self.sub = rospy.Subscriber('manualServer', Float32MultiArray,self.control_callback)
 
     def control_callback(self, msg):
-        print("curr linear speed is" + str(msg.data[0]))
-        print("curr angle speed is" + str(msg.data[1]))
+        print("curr linear speed is" + str(msg.data[1]))
+        print("curr angle speed is" + str(msg.data[0]))
 
-        self.linSpeed = msg.data[0]
-        self.angSpeed = msg.data[1]
+        self.linSpeed = 0.23 * msg.data[1]
+        self.angSpeed = -1.82 * msg.data[0]
 
     def move_motor(self): 
         mc = Twist() 

@@ -2,7 +2,6 @@
 
 import queue
 import rospy
-from rospy import Publisher
 from std_msgs.msg import Int16
 
 class ZeroPublisher():

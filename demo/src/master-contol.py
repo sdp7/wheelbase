@@ -7,7 +7,7 @@ from std_msgs.msg import Int16
 class masterControl():
     
     def __init__(self):
-        rospy.init_node("master-control", anonymous = True)
+        rospy.init_node("masterControl")
 
         # 0 for navigation and 1 for mannalControl
         self.currMode = 0
@@ -19,6 +19,7 @@ class masterControl():
         if(msg.data != self.currMode):
             if(msg.data == 1):
                 self.nav.client.cancel_all_goals()
+                self.nav.goal_index = (self.nav.goal_index - 1) % len(self.nav.goals)
                 print("switch to mannal control")
             elif (msg.data == 0):
                 print("switch to navigation")
@@ -32,9 +33,14 @@ if __name__ == '__main__':
 
     master = masterControl()
 
-    if master.currMode == 1:
-        master.mannual.move_motor()
-    else:
-        master.nav.publishMoveBaseGoal()
+    while not rospy.is_shutdown():
+        try:
+            if master.currMode == 1:
+                master.mannual.move_motor()
+            else:
+                master.nav.publishMoveBaseGoal()
+        except KeyboardInterrupt:
+            print("shutting down")
+            exit()
         
 
