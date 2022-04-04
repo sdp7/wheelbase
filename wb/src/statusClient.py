@@ -4,6 +4,7 @@ from doctest import master
 import rospy
 from std_msgs.msg import Int16
 import server
+from std_msgs.msg import Float64MultiArray
 
 class StatusPoster():
 
@@ -14,13 +15,13 @@ class StatusPoster():
         # 0 for navigation 1 for manual 
         self.currMode = 0
 
-        self.subMode = rospy.Subscriber('currMode', Int16, self.mode_callback)
+        self.subMode = rospy.Subscriber('manualServer', Float64MultiArray, self.mode_callback)
         self.subHuman = rospy.Subscriber('num_people', Int16, self.humanCount_callback)
         self.rate = rospy.Rate(10)
     
     def mode_callback(self, msg):
 
-        if(msg.data != self.currMode):
+        if(msg.data[6] != self.currMode):
             print ("data change to " +  str(msg.data))
             self.currMode = msg.data
     
