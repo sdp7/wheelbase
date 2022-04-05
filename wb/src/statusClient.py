@@ -23,7 +23,8 @@ class StatusPoster():
         if(msg.data[5] != self.currMode):
             print ("data change to " +  str(msg.data))
             self.currMode = msg.data
-    
+        self.rate.sleep()
+        
     def humanCount_callback(self, msg):
         self.humanCount = msg.data
         print("got " + str(self.humanCount) + " human")
@@ -44,5 +45,5 @@ if __name__ == '__main__':
             print("shutting down")
             exit()
             break
-        master.rate.sleep()
+        
 
