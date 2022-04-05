@@ -13,20 +13,18 @@ class StatusPoster():
 
         self.humanCount = 0
         # 0 for navigation 1 for manual 
-        self.currMode = 0
+        self.currMode = 0.0
 
         self.subMode = rospy.Subscriber('manualServer', Float64MultiArray, self.mode_callback)
-        self.subHuman = rospy.Subscriber('num_people', Int16, self.humanCount_callback)
+        # self.subHuman = rospy.Subscriber('num_people', Int16, self.humanCount_callback)
         self.rate = rospy.Rate(10)
     
     def mode_callback(self, msg):
-
-        if(msg.data[6] != self.currMode):
+        if(msg.data[5] != self.currMode):
             print ("data change to " +  str(msg.data))
             self.currMode = msg.data
     
     def humanCount_callback(self, msg):
-
         self.humanCount = msg.data
         print("got " + str(self.humanCount) + " human")
     
@@ -45,5 +43,6 @@ if __name__ == '__main__':
             server.close_socket()
             print("shutting down")
             exit()
+            break
         master.rate.sleep()
 

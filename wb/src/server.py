@@ -7,7 +7,7 @@ def start_socket():
     global c
     # take the server name and port name
     host = '192.168.105.84'
-    port = 35000
+    port = 38000
     
     # create a socket at server side
     # using TCP / IP protocol
