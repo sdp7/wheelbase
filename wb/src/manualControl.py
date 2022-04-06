@@ -11,18 +11,18 @@ from time import time
 
 class mannualController():
     def __init__(self):
-        # rospy.init_node("manual_control", anonymous=True)
+        rospy.init_node("manual_control", anonymous=True)
         self.angSpeed = 0
         self.linSpeed = 0
-
+        self.rate = rospy.Rate(20)
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         self.sub = rospy.Subscriber('manualServer', Float32MultiArray,self.control_callback)
 
     def control_callback(self, msg):
-        print("curr linear speed is" + str(msg.data[1]))
-        print("curr angle speed is" + str(msg.data[0]))
+        # print("curr linear speed is" + str(msg.data[1]))
+        # print("curr angle speed is" + str(msg.data[0]))
 
-        print("hello")
+        # print("hello")
         self.linSpeed = 0.23 * msg.data[1]
         self.angSpeed = -1.82 * msg.data[0]
 
@@ -31,8 +31,7 @@ class mannualController():
         mc.linear.x = self.linSpeed
         mc.angular.z = self.angSpeed 
         self.pub.publish(mc) 
-        print(self.linSpeed)
-        print(self.angSpeed)
+        #self.rate.sleep()
 
 
 if __name__ == '__main__':

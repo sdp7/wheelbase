@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from navArena import *
-from mannualControl import *
+from manualControl import *
 from std_msgs.msg import Int16
 from time import time, sleep 
 
