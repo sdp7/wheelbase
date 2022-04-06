@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
 
-import posix
-from pydoc import cli
-from socket import MsgFlag
-from sysconfig import get_config_h_filename
-from turtle import pos
-from cupshelpers import Printer
-
-from psutil import POSIX
-from rospkg import get_ros_home
 import rospy
 from geometry_msgs.msg import PoseStamped
 import actionlib

@@ -14,7 +14,7 @@ from time import time
 
 class mannualController():
     def __init__(self):
-        #rospy.init_node("mannal_control", anonymous=True)
+        # rospy.init_node("manual_control", anonymous=True)
         self.angSpeed = 0
         self.linSpeed = 0
 
