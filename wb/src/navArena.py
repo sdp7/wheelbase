@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-
-from psutil import POSIX
-from rospkg import get_ros_home
 import rospy
 from geometry_msgs.msg import PoseStamped
 import actionlib
