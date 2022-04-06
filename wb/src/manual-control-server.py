@@ -6,7 +6,7 @@ Example usage of the TCPServer class from the TCPCOM library
 
 from tcpcom import TCPServer
 import rospy
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Float32MultiArray
 from time import time, sleep 
 
 # connection configuration settings
@@ -30,7 +30,7 @@ class manualServer:
         self.turret_y = 0
         self.isShooting = False
         self.control = False
-        self.pub = rospy.Publisher("manualServer", Float64MultiArray, queue_size = 10)
+        self.pub = rospy.Publisher("manualServer", Float32MultiArray, queue_size = 10)
         self.rate = rospy.Rate(20)
 
     def handleMessage(self, msg):
@@ -71,7 +71,7 @@ class manualServer:
             exit()
         
     def pub_states(self):
-        msg = Float64MultiArray()
+        msg = Float32MultiArray()
         msg.data = [self.wheelbase_x, self.wheelbase_y, self.turret_x, self.turret_y,self.isShooting,self.control]
         self.pub.publish(msg)
         self.rate.sleep()

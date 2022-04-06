@@ -11,9 +11,9 @@ from nav_msgs.msg import Odometry
 
 class NavClient:
     def __init__(self):
-       rospy.init_node('nav_stack_goals')
+       rospy.init_node('go_back')
        # data for real arena 
-       self.goals =  [(0,0,0,0),(1.105, -0.49, -0.5635, 0.826), (1.82215,-3.46746, 0.9999, 0.0097), (-0.1357, -3.27549,0.70201, -0.712166 ), (0,0,0,0)]
+       self.goals =  [(0,0,0,0)]
        #self.goals =  [(-0.1845, -0.5100, -0.0857, 0.9963), (1.6050, -0.5800, -0.69536, 0.71866), (1.5550, 1.3600, 0.9703, 0.2420), (-1.065, 1.74, -0.97685, 0.2139), (-2.0150, -0.5000, -6.6721, 1.0000)]
        self.goal_index = 0
 
@@ -62,11 +62,7 @@ if __name__ == '__main__':
     while True:
         try:
             navC.publishMoveBaseGoal()
+            exit()
         except KeyboardInterrupt:
             print("Shutting down")
             exit()
-
-
-
-        
-

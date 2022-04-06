@@ -6,8 +6,8 @@ c = None
 def start_socket():
     global c
     # take the server name and port name
-    host = '192.168.105.84'
-    port = 38000
+    host = '192.168.105.5'
+    port = 39000
     
     # create a socket at server side
     # using TCP / IP protocol
@@ -34,6 +34,7 @@ def send_message(message):
   
 def close_socket():
     # disconnect the server
+    c.send("close")
     c.close()
 
 if __name__ == "__main__":

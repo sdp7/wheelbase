@@ -41,7 +41,7 @@ if __name__ == '__main__':
             statusPoster.rate.sleep()
             #statusPoster.humanCount
             # rospy.spin()
-        except KeyboardInterrupt:
+        except:
             server.close_socket()
             print("shutting down")
             exit()

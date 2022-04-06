@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-from itertools import count
-from tkinter.tix import Meter
-from xmlrpc.client import TRANSPORT_ERROR
 
 from numpy import angle
 
@@ -14,7 +11,7 @@ from time import time
 
 class mannualController():
     def __init__(self):
-        #rospy.init_node("mannal_control", anonymous=True)
+        rospy.init_node("mannal_control", anonymous=True)
         self.angSpeed = 0
         self.linSpeed = 0
 
@@ -25,6 +22,7 @@ class mannualController():
         print("curr linear speed is" + str(msg.data[1]))
         print("curr angle speed is" + str(msg.data[0]))
 
+        print("hello")
         self.linSpeed = 0.23 * msg.data[1]
         self.angSpeed = -1.82 * msg.data[0]
 
@@ -33,6 +31,9 @@ class mannualController():
         mc.linear.x = self.linSpeed
         mc.angular.z = self.angSpeed 
         self.pub.publish(mc) 
+        print(self.linSpeed)
+        print(self.angSpeed)
+
 
 if __name__ == '__main__':
 
