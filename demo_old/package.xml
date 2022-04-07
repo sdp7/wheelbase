@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>demo</name>
-  <version>0.0.0</version>
+  <name>demo_old</name>
+  <version>1.0.0</version>
   <description>The package for nodes written for demos</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->

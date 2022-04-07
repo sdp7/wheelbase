@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
 
-import posix
-from pydoc import cli
-from socket import MsgFlag
-from sysconfig import get_config_h_filename
-from turtle import pos
-from cupshelpers import Printer
 
 from psutil import POSIX
 from rospkg import get_ros_home
@@ -17,9 +11,13 @@ from nav_msgs.msg import Odometry
 
 class NavClient:
     def __init__(self):
-       rospy.init_node('nav_stack_goals')
-       self.goals =  [(0,0,0,0),(1.105, -0.49, -0.5635, 0.826), (1.82215,-3.46746, 0.9999, 0.0097), (-0.1357, -3.27549,0.70201, -0.712166 ), (0,0,0,0)]
+       rospy.init_node('go_back')
+       # data for real arena 
+       self.goals =  [(0,0,0,0)]
+       #self.goals =  [(-0.1845, -0.5100, -0.0857, 0.9963), (1.6050, -0.5800, -0.69536, 0.71866), (1.5550, 1.3600, 0.9703, 0.2420), (-1.065, 1.74, -0.97685, 0.2139), (-2.0150, -0.5000, -6.6721, 1.0000)]
        self.goal_index = 0
+
+       rospy.on_shutdown(self.shutdown)
 
        self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
        self.client.wait_for_server()
@@ -39,18 +37,24 @@ class NavClient:
         msg.target_pose.header.stamp = rospy.Time.now()
         msg.target_pose.pose.position.x = currGoal[0]
         msg.target_pose.pose.position.y = currGoal[1]
-        msg.target_pose.pose.orientation.z = currGoal[2]
-        msg.target_pose.pose.orientation.w = currGoal[3]
-
+        msg.target_pose.pose.orientation.z = 0
+        msg.target_pose.pose.orientation.w = 1
+        print("navgate to point" + str(currGoal[0]) + "," + str(currGoal[1]))
         self.client.send_goal(msg)
         wait = self.client.wait_for_result()
         if not wait:
             rospy.logerr("Action server not available!")
             rospy.signal_shutdown("Action server not available!")
+            exit()
         else:
             now = rospy.get_rostime()
             self.goal_index = (self.goal_index+1) % len(self.goals)
             return self.client.get_result()
+    
+    def shutdown(self):
+        self.client.cancel_all_goals()
+        rospy.loginfo("Stop")
+        rospy.sleep(1)
         
 if __name__ == '__main__':
 
@@ -58,11 +62,7 @@ if __name__ == '__main__':
     while True:
         try:
             navC.publishMoveBaseGoal()
+            exit()
         except KeyboardInterrupt:
             print("Shutting down")
             exit()
-
-
-
-        
-

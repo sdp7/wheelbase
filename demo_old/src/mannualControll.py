@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+
 from itertools import count
 from tkinter.tix import Meter
 from xmlrpc.client import TRANSPORT_ERROR
 
 from numpy import angle
 
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import JointState
 import rospy
 from geometry_msgs.msg import Twist 
@@ -18,14 +19,15 @@ class mannualController():
         self.linSpeed = 0
 
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-        self.sub = rospy.Subscriber('control', Float64MultiArray,self.control_callback)
+        self.sub = rospy.Subscriber('manualServer', Float32MultiArray,self.control_callback)
+        self.rate = rospy.Rate(20)
 
     def control_callback(self, msg):
-        print("curr linear speed is" + str(msg.data[0]))
-        print("curr angle speed is" + str(msg.data[1]))
+        print("curr linear speed is" + str(msg.data[1]))
+        print("curr angle speed is" + str(msg.data[0]))
 
-        self.linSpeed = msg.data[0]
-        self.angSpeed = msg.data[1]
+        self.linSpeed = 0.23 * msg.data[1]
+        self.angSpeed = -1.82 * msg.data[0]
 
     def move_motor(self): 
         mc = Twist() 
@@ -40,6 +42,7 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         try:
             controller.move_motor()
+            controller.rate.sleep()
         except KeyboardInterrupt:
             print("shutting down")
             exit()

@@ -1,0 +1,12 @@
+<launch>
+  <node 
+    pkg="wb" 
+    type="manualControl.py" 
+    name="manual_server">
+  </node>
+  <node 
+    pkg="turret" 
+    type="HumanDetection.py" 
+    name="num_people">
+  </node>
+</launch>
