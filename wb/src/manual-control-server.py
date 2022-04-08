@@ -8,6 +8,7 @@ from tcpcom import TCPServer
 import rospy
 from std_msgs.msg import Float32MultiArray
 from time import time, sleep 
+import socket
 
 # connection configuration settings
 tcp_ip = "192.168.105.17"
@@ -18,6 +19,14 @@ wheelbase_x = 0
 wheelbase_y = 0
 turret_x = 0
 turret_y = 0
+
+
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
+
+device_ip = get_ip_address()  # '192.168.0.110'
 
 
 class manualServer:
@@ -76,6 +85,7 @@ class manualServer:
 
 def main():
     ms = manualServer()
+    print(f"IP of this device is: {device_ip}")
     global server
     server = TCPServer(tcp_port, stateChanged=ms.onStateChanged)
     # while not rospy.is_shutdown():

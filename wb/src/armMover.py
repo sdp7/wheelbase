@@ -7,7 +7,7 @@ from time import time, sleep
 
 class armMover():
     def __init__(self):
-        # rospy.init_node('move_arm',anonymous=True) 
+        rospy.init_node('move_arm',anonymous=True) 
         self.jointpub = rospy.Publisher('joint_trajectory_point',Float64MultiArray, queue_size =10)    
         self.joint_pos = Float64MultiArray() 
         self.rate = rospy.Rate(1)
@@ -40,16 +40,16 @@ class armMover():
         #[0, shoulder1, shoulder2, elbow, wrist, gripper]
         self.joint_pos.data = self.clean_joint_states([0, angle,  1.57, -1.47, 0, 0]) 
         self.jointpub.publish(self.joint_pos) 
-        # self.read_joint_states() 
+        self.read_joint_states() 
  
 #loops over the commands at 10Hz until shut down
 if __name__ == '__main__': 
     num = 0
     am = armMover()
 
-    statepub = rospy.Publisher('moved_arm', Bool, queue_size =10)
+    statepub = rospy.Publisher('reset_arm', Bool, queue_size =10)
     statepub.publish(False) 
-    goals = [0.0]
+    goals = [0.0]*10
     while not rospy.is_shutdown(): 
         for goal in goals:
             am.move_arm(goal) 
